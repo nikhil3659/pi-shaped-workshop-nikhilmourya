@@ -10,3 +10,23 @@ It is  like saying This app should only live in this kind of house.This helps wi
 It gives more control over where apps run.
 
 ![image](https://github.com/user-attachments/assets/2016e935-d37f-4453-bd39-160cb1365ad8)
+
+
+# About affinity rules applied
+  affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: disktype
+                    operator: In
+                    values:
+                      - ssd
+
+
+
+The rule is under requiredDuringSchedulingIgnoredDuringExecution, which means the rule must be followed during scheduling, but is ignored if the node’s label changes later. The pod will only run on nodes that have a label with the key disktype. It checks if the value of disktype is in the list of allowed values.
+In this case, the allowed value is ssd. So, only nodes labeled like disktype=ssd will be selected.
+If there are no such nodes, the pod won’t be scheduled at all.
+This helps place pods on suitable hardware, like faster SSD storage.
+It’s useful when the app needs specific node features for best performance.
